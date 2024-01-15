@@ -41,13 +41,29 @@ De keuze voor de ESP32 WROOM als microcontroller is gemaakt omdat die een kracht
 
 ## **Uitleg Code**
 
+De code voor dit bal balanceer project door middel van PID is gestart door eerst een systeem te maken wat de bal kon balanceren door de sensor waarders verkregen van de tof sensor zonder PID. Toen de bal succesvol gebalanceerd werd is de PID regeling geprogrammeerd en getest. De uitleg van de 2 programma's en de PID berekeningen staat hieronder.
+
 ### *Code zonder PID*
 
 ### *PID berekening*
 
+Een volledige PID output kan beschreven worden door de volgende formule:
+
+$$ u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} $$ 
+
+$u(t)$ : Dit is de output van de berekening
+
+$e(t)$ : Dit is de error die zich nog in de output bevindt ten opzichte van het setpoint
+
+$K_p$ : Dit is de proportionele factor van het systeem
+
+$K_i$ : Dit is de integrale factor van het systeem
+
+$K_d$ : Dit is de afgeleide factor van het systeem
+
 ### *Code met PID*
 
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ! FORMAT VOORBEELDEN HIERONDER !
 
 > [!NOTE]
