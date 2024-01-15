@@ -7,6 +7,8 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 ## **Uitleg ontwerpkeuzes 3D print**
 
+Het ontwerp van de 3D modellen is zo simpel mogelijk gemaakt. Het gehele model is opgedeeld in 4 delen zodat het op elke gemiddelde 3D printer geprint kan worden en zodat wanneer een onderdeel vervangen of opnieuw ontworpen moet worden het per deel gedaan kan worden. Het ontwerp bestaat uit een goot/ balk waar een balletje in kan rollen. Deze goot/ balk kan in elkaar worden geschoven en wordt bij elkaar gehouden door het middelste kantelpunt waar een bout door heen zit. Naast het middelste kantelpunt is er nog een ander kantelpunt, dit kantelpunt is het punt waar de servo motor de goot/ balk mee laat bewegen.
+
 ## **Uitleg Componentkeuze**
 
 ### *MG90 Servo*
