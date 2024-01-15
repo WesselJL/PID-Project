@@ -40,4 +40,4 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 This site was built using [GitHub Pages](https://pages.github.com/)
 
-u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt}
+$$ u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} $$ 
