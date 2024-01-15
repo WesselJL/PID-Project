@@ -15,7 +15,7 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 ### *ESP32 WROOM*
 
-## **Uitleg Code met afbeeldingen van stukjes code waar over wordt uitgelegd**
+## **Uitleg Code**
 
 ### *Code zonder PID*
 
