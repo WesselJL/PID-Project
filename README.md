@@ -9,7 +9,7 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 Het ontwerp van de 3D modellen is zo simpel mogelijk gemaakt. Het gehele model is opgedeeld in 4 delen zodat het op elke gemiddelde 3D printer geprint kan worden en zodat wanneer een onderdeel vervangen of opnieuw ontworpen moet worden het per deel gedaan kan worden. Het ontwerp bestaat uit een goot/ balk waar een balletje in kan rollen. Deze goot/ balk kan in elkaar worden geschoven en wordt bij elkaar gehouden door het middelste kantelpunt waar een bout door heen zit. Naast het middelste kantelpunt is er nog een ander kantelpunt, dit kantelpunt is het punt waar de servo motor de goot/ balk mee laat bewegen.
 
-
+Op de 3D geprinte delen zijn bevestigings punten voor zowel de servo motor als de time of flight sensor. Deze motor en sensor zijn vastgemaakt met standaar maat boutjes en moeren. Het vierde en laaste deel van het model is de voetsteun. Deze steun zit vast aan het middelste kantelpunt, het kantelpunt van de servo motor en de servo motor zelf zit ook vast aan deze voetsteun. 
 
 ## **Uitleg Componentkeuze**
 
