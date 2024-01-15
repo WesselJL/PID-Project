@@ -13,6 +13,8 @@ Op de 3D geprinte delen zijn bevestigings punten voor zowel de servo motor als d
 
 ## **Uitleg Componentkeuze**
 
+Voor dit PID bal balanceer project is er gekozen voor de MG90-servo, de VL53L0X ToF-sensor en de ESP32 WROOM. Deze keuzes zijn gebaseerd op de eigenschappen en functionaliteiten van elk component, deze eigenschappen en functionaliteit zorgen ervoor dat de bal gebalanceerd kan worden door middel van de gecodeerde PID regelaar.
+
 ### *MG90 Servo*
 
 ### *VL530IX tof sensor*
