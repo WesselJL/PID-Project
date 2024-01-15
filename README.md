@@ -52,3 +52,7 @@ $K_i$ : Dit is de integrale factor van het systeem
 
 $K_d$ : Dit is de afgeleide factor van het systeem
 
+| First Header  | Second Header |
+| ------------- | ------------- |
+| Content Cell  | Content Cell  |
+| Content Cell  | Content Cell  |
