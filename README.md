@@ -23,8 +23,8 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 ### *Code met PID*
 
------------------------               --------------------------                 -----------------------------                  ----------------------                    -----------------
-Format voorbeelden hieronder
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+! FORMAT VOORBEELDEN HIERONDER !
 
 > [!NOTE]
 > Useful information that users should know, even when skimming content.
