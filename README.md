@@ -7,5 +7,16 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 **Uitleg ontwerpkeuzes 3D print**
 
+**Uitleg Componentkeuze**
+
+*MG90 Servo*
+*VL530IX tof sensor*
+*ESP32 WROOM*
+
 **Uitleg Code met afbeeldingen van stukjes code waar over wordt uitgelegd**
+
+*Code zonder PID*
+*PID berekening*
+*Code met PID*
+
 
