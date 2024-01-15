@@ -38,3 +38,4 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 > [!CAUTION]
 > Advises about risks or negative outcomes of certain actions.
 
+This site was built using [GitHub Pages](https://pages.github.com/)
