@@ -42,13 +42,13 @@ This site was built using [GitHub Pages](https://pages.github.com/)
 
 $$ u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} $$ 
 
-$u(t)$ is de output van de berekening
+$u(t)$ : Dit is de output van de berekening
 
-$$ e(t) $$
+$e(t)$ : Dit is de error die zich nog in de output bevindt ten opzichte van het setpoint
 
-$$ K_p $$
+$K_p$ : Dit is de proportionele factor van het systeem
 
-$$ K_i $$
+$K_i$ : Dit is de integrale factor van het systeem
 
-$$ K_d $$
+$K_d$ : Dit is de afgeleide factor van het systeem
 
