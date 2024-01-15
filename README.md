@@ -19,8 +19,8 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 
 ### *Code zonder PID*
 
-*PID berekening*
+###*PID berekening*
 
-*Code met PID*
+###*Code met PID*
 
 
