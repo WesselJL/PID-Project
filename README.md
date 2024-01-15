@@ -19,6 +19,8 @@ Voor dit PID bal balanceer project is er gekozen voor de MG90-servo, de VL53L0X 
 
 ![MG90S-180-1](https://github.com/WesselJL/PID-Project/assets/80854689/1b33b8b9-5ac1-4ebd-b266-8300f48a2a51)
 
+<MG90S-180-1="https://github.com/WesselJL/PID-Project/assets/80854689/1b33b8b9-5ac1-4ebd-b266-8300f48a2a51" width="100" height="100">
+
 De MG90-servo is gekozen vanwege de volgende eigenschappen: nauwkeurig, betrouwbaar en licht van gewicht. Met een hoog koppel voor de afmeting van de servo motor en de nauwkeurige positioneringsmogelijkheden zorgt de MG90 voor het balanceren van de bal. Bovendien is het compacte formaat van de servo gunstig voor het toepassen in ons project zonder dat er extra gewicht wordt toe gevoegd.
 
 ### *VL530IX tof sensor*
