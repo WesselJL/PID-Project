@@ -23,7 +23,15 @@ De MG90-servo is gekozen vanwege de volgende eigenschappen: nauwkeurig, betrouwb
 
 ### *VL530IX tof sensor*
 
+![550x332](https://github.com/WesselJL/PID-Project/assets/80854689/281ce940-92aa-434b-9571-d8b94be0e529)
+
+De VL53L0X Time-of-Flight-sensor is een belangrijk component in dit project vanwege de mogelijkheid om snel en nauwkeurig afstanden te meten. Het ToF-principe zorgt er voor dat in real-time de afastands gegevens worden verkregen over de afstand tussen de sensor en de bal die gebalanceerd moet worden. Deze gegevens zijn essentieel voor de PID-regeling om snel en effectief te reageren op veranderingen in de positie van de bal. Deze sensor kan afstanden meten tot 2 meter dus dat is ruim voldoende voor deze opstelling. De snelste modus van de sensor kan met een afstand van 1.2 meter en een nauwkeurigheid van +/- 5% elke 20ms een afstand meten. 
+
 ### *ESP32 WROOM*
+
+![61o2ZUzB4XL _AC_UF894,1000_QL80_](https://github.com/WesselJL/PID-Project/assets/80854689/310c40ca-6b5b-4fcb-a35d-c50960a8601e)
+
+De keuze voor de ESP32 WROOM als microcontroller is gemaakt omdat die een krachtige verwerkingscapaciteit, geavanceerde communicatiemogelijkheden en brede ondersteuning in de open source wereld heeft. De dual-core processor op 240 MHz biedt voldoende rekenkracht om de PID-regeling te implementeren en tegelijkertijd andere taken uit te voeren. Bovendien maakt de geïntegreerde Wi-Fi-connectiviteit van de ESP32 WROOM draadloze communicatie mogelijk, waardoor het gemakkelijk is om gegevens te verzenden en ontvangen voor verdere analyse en aanpassingen.
 
 ## **Uitleg Code**
 
