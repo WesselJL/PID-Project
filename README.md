@@ -42,7 +42,8 @@ This site was built using [GitHub Pages](https://pages.github.com/)
 
 $$ u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} $$ 
 
-$$ u(t) $$
+$ u(t) $
+
 e(t) 
 K_p 
 K_i 
