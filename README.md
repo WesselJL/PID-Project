@@ -36,6 +36,9 @@ De VL53L0X Time-of-Flight-sensor is een belangrijk component in dit project vanw
 
 De keuze voor de ESP32 WROOM als microcontroller is gemaakt omdat die een krachtige verwerkingscapaciteit, geavanceerde communicatiemogelijkheden en brede ondersteuning in de open source wereld heeft. De dual-core processor op 240 MHz biedt voldoende rekenkracht om de PID-regeling te implementeren en tegelijkertijd andere taken uit te voeren. Bovendien maakt de geïntegreerde Wi-Fi-connectiviteit van de ESP32 WROOM draadloze communicatie mogelijk, waardoor het gemakkelijk is om gegevens te verzenden en ontvangen voor verdere analyse en aanpassingen.
 
+> [!NOTE]
+> De componenten die hierboven genoemd en toegelicht zijn zitten aangesloten op een gaatjes print. De kabels dienen lang genoeg te zijn, dit omdat de sensor met de balk/ goot mee kantelt.
+
 ## **Uitleg Code**
 
 ### *Code zonder PID*
