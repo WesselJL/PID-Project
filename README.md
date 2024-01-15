@@ -41,3 +41,15 @@ Het PID bal balanceer project is een project waarbij een balletje wordt gebalanc
 This site was built using [GitHub Pages](https://pages.github.com/)
 
 $$ u(t) = K_p e(t) + K_i \int_{0}^{t} e(\tau) d\tau + K_d \frac{de(t)}{dt} $$ 
+
+\begin{align*}
+u(t) & = K_p \cdot e(t) + K_i \cdot \int_{0}^{t} e(\tau) \, d\tau + K_d \cdot \frac{de(t)}{dt} \\
+u(t) & : \text{Control output} \\
+e(t) & : \text{Error signal, } e(t) = \text{Setpoint} - \text{Process variable} \\
+K_p & : \text{Proportional gain, a tuning parameter} \\
+K_i & : \text{Integral gain, a tuning parameter} \\
+K_d & : \text{Derivative gain, a tuning parameter} \\
+\int_{0}^{t} e(\tau) \, d\tau & : \text{Integral term, accumulation of error over time} \\
+\frac{de(t)}{dt} & : \text{Derivative term, rate of change of error with respect to time}
+\end{align*}
+
