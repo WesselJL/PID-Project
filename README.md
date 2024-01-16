@@ -158,7 +158,7 @@ Deze formule berekent op basis van de fout tussen het gewenste punt/ waarde en d
 
 ### *Code met PID*
 
-In de code voor het balanceren van de bal met een PID regeling worden er een flink aantal extra variabele in de code toegevoegd. Deze variabele zijn de huidige tijd en de laatste tijd, de waardes voor P, I en D en de error die het systeem heeft. Daarnaast is er ook nog een variabele om de tijd in op te slaan tussen de metingen en een variabele voor de vorige foutwaarde.
+In de code voor het balanceren van de bal met een PID regeling worden er een aantal variabelen in de code toegevoegd. Deze variabelen zijn de huidige tijd en de laatste tijd, de waardes voor P, I en D en de error die het systeem heeft. Daarnaast is er ook nog een variabele om de tijd in op te slaan tussen de metingen en een variabele voor de vorige foutwaarde.
 
 ```ruby
 double sensorValue; // Variabele voor het opslaan van de gelezen sensorwaarde
@@ -172,12 +172,20 @@ double dt; // Tijd tussen metingen voor de PID-regelaar
 double setpoint = 550; // Gewenste sensorwaarde
 double previous; // Vorige foutwaarde voor de differentiërende term in de PID-regelaar
 ```
-De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds geïnitialiseerd en de servo positie wordt weer naar een "start" waarde gezet. Voordat de loop wordt uitgelegd zal eerste het deel wat de PID waarde berekent aan bod komen. 
+De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds geïnitialiseerd en de servo positie wordt weer naar een "start" waarde gezet.  
 
 > [!WARNING]
-> De goeie waardes voor P, I en D om een stabiel systeem te krijgen verschillen voor elke opstelling. Door middel van trial en error kan je de waardes voor jou systeem vinden.
+> De goeie waardes voor P, I en D om een stabiel systeem te krijgen verschillen voor elke opstelling. Door middel van trial en error zijn de waardes voor een verschillend systeem vinden (denk aan een zwaardere bal of dergelijk).
 
-Hieronder !SVEN KAN JIJ DIT UITLEGGEN, IK NIET SNAP/ IK KAN NIET GOED GENOEG UITLEGGEN! <3 DANKU <3 
+De functie 'calculatePID' berekend de juiste output om de servo aan te sturen en returnt deze. 
+
+*Proportioneel*: De fout 'error' wordt vermenigvuldigd met de proportionele factor 'P'.
+
+*Integraal*: De fout 'error' wordt vermenigvuldigd met de *dt* sampletijd, de vorige berekende waarde van de integraal wordt hierbij opgeteld. Vervolgens wordt dit nog vermenigvuldigd met de integrale factor 'I'.
+
+*Differentiaal*: De fout 'error' wordt afgetrokken van de vorige fout en gedeeld door de *dt* sampletijd. Deze uitkomst wordt vermenigvuldigd met de differentiale factor 'D'.
+
+Uiteindelijk geeft de functie de opgetelde som van deze drie waardes, dus Proportioneel + Integraal + Differentiaal.
 
 ```ruby
 double calculatePID() {
