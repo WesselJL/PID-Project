@@ -45,6 +45,12 @@ De code voor dit bal balanceer project d.m.v. PID is gestart door eerst een syst
 
 ### *Code zonder PID*
 
+```ruby
+#include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
+#include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
+#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek voor de Servo-motor
+```
+
 ### *PID berekening*
 
 Een volledige PID output kan beschreven worden door de volgende formule:
