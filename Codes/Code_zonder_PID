@@ -1,1 +1,44 @@
+#include <Wire.h>
+#include <Adafruit_VL53L0X.h>
+#include <ESP32Servo.h>
+
+#define SERVO_PIN 12
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+Servo servo;
+
+void setup() {
+  Serial.begin(115200);
+  Serial.println("Ping Pong Ball Balancing");
+
+  if (!lox.begin()) {
+    Serial.println(F("Failed to boot VL53L0X"));
+    while (1);
+  }
+
+  servo.attach(SERVO_PIN);
+  servo.write(90); // Set the initial position of the servo to 90 degrees
+
+  delay(500); // Allow time for the servo to move to the initial position
+}
+
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure;
+  
+  lox.rangingTest(&measure, false);
+
+  if (measure.RangeStatus != 4) {  // Check if measurement is valid
+    int distance = measure.RangeMilliMeter;
+    Serial.print("Distance (mm): ");
+    Serial.println(distance);
+
+    // Adjust servo position based on distance
+    int servoPosition = map(distance, 20, 270, 0, 180); // Adjust the mapping range based on your setup
+    servo.write(servoPosition);
+    
+    delay(50); // Adjust this delay to control the responsiveness of the system
+  } else {
+    Serial.println("Out of range");
+  }
+}
 
