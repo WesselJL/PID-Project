@@ -59,6 +59,24 @@ Dan als volgende is het de pin initialisatie van de servo motor, initialisatie v
 Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
 Servo servo; // Initialisatie van de Servo motor
 ```
+In de setup van het programma wordt de seriële communicatie opgesteld en wordt er gecontroleerd of de VL53LOX juist is opgestart. Wanneer dit niet het geval is dan wordt er een foutmelding in de seriële monitor geprint. Daarnaast wordt ook de servo variabele gekoppeld aan de Servo pin en wordt de positie van de servo motor ingesteld op 90 graden, dit is de start positie.
+
+```ruby
+void setup() {
+  Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
+  Serial.println("Ping Pong Ball Balancing"); // Uitvoer van een begroetingsbericht
+
+  if (!lox.begin()) { // Controle op het starten van de VL53L0X-sensor
+    Serial.println(F("Failed to boot VL53L0X")); // Uitvoer van een foutmelding bij mislukken en stoppen van het programma
+    while (1);
+  }
+
+  servo.attach(SERVO_PIN); // Koppeling van de Servo-object aan de gedefinieerde pin
+  servo.write(90); // Instellen van de initiële positie van de Servo-motor op 90 graden
+
+  delay(500); // Wachten om de Servo-motor naar de initiële positie te laten bewegen
+}
+```
 
 ### *PID berekening*
 
