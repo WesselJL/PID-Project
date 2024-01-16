@@ -217,7 +217,61 @@ void loop() {
 ```
 !SVEN KAN JIJ DIT DEEL OOK UITLEGGEN? <3
 
-### *Code voor het versturen naar een web interface* 
+De code met PID kan je zien in de volgende [video](https://youtu.be/PQ2CX1DTkAU)
+
+### *Code voor het veranderen van PID waardes in web interface* 
+
+Om de PID waardes te veranderen in een web interface wordt er in de setup van de code een deel toegevoegd wat er voor zorgt dat de ESP32 verbind met een wifi netwerk en dat de ESP32 wordt geconfigureerd als acces point. Vervolgens geeft de code een ip address die gebruikt kan worden om naar de web interface te navigeren. De code hiervan staat hieronder uitgelegd:
+
+```ruby
+  // Verbind met het Wi-Fi-netwerk met SSID en wachtwoord
+  Serial.print("Setting AP (Access Point)…");
+  // Verwijder het wachtwoordparameter als je wilt dat het AP (Access Point) open is
+  WiFi.softAP(ssid, password);
+
+  IPAddress IP = WiFi.softAPIP();
+  Serial.print("AP IP address: ");
+  Serial.println(IP);
+
+  server.begin();
+```
+In de void executeWiFI worden een heel aantal dingen gedaan en hieronder worden de belangrijkste dingen toegelicht:
+
+om de HTML webpagina te tonen met 3 invoer velden van de PID waardes en 3 bevestigings knoppen wordt de volgende code gebruikt
+```ruby
+            // Toon de HTML-webpagina
+            client.println("<!DOCTYPE html><html>");
+            client.println("<head>");
+            client.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            client.println("</head>");
+            client.println("<body>");
+
+            // Werk de formulieractie bij om de POST-methode te gebruiken
+            client.println("<form action=\"/update\" method=\"post\">");
+
+            // Werk de waarde van de tekstvelden bij met de huidige waarden van P, I en D
+            client.println("<p>P: <input type=\"text\" name=\"P\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(P) + "\"></p>");
+            client.println("<p>I: <input type=\"text\" name=\"I\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(I) + "\"></p>");
+            client.println("<p>D: <input type=\"text\" name=\"D\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(D) + "\"></p>");
+
+            // Voeg een verzendknop toe voor elke variabele om de formulierinzending te activeren
+            client.println("<p><input type=\"submit\" name=\"updateP\" value=\"Update Values\"></p>");
+```
+Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabeles die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
+
+```ruby
+// Werk de PID-parameter bij op basis van de POST-gegevens
+void updateParameter(String postBody, String paramName, float &param) {
+  int paramIndex = postBody.indexOf(paramName + "=");
+  if (paramIndex != -1) {
+    String paramValue = postBody.substring(paramIndex + paramName.length() + 1);
+    param = paramValue.toFloat(); // Zet de string om naar een float en werk de parameter bij
+    Serial.print("Updated " + paramName + ": ");
+    Serial.println(param);
+  }
+}
+```
+
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ! FORMAT VOORBEELDEN HIERONDER !
