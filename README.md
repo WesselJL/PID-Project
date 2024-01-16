@@ -100,6 +100,43 @@ void loop() {
   }
 }
 ```
+> [!IMPORTANT]
+> De waardes 20 & 270 in de 'int servoPosition = map(distance, 20, 270, 0, 180);' line moeten worden aangepast naar de minimale en maximale sensor waarde van je eigen sensor. Deze zijn te verkrijgen door je object wat gebalanceerd moet worden op zijn positie die het dichtsbij de sensor zit en het verste weg van de sensor zit. Deze zijn uit te lezen door het uitvoeren van onderstaande code:
+
+```ruby
+#include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
+#include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
+
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+
+void setup() {
+  Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
+  Serial.println("Ping Pong Ball Balancing"); // Uitvoer van een begroetingsbericht
+
+  if (!lox.begin()) { // Controle op het starten van de VL53L0X-sensor
+    Serial.println(F("Failed to boot VL53L0X")); // Uitvoer van een foutmelding bij mislukken en stoppen van het programma
+    while (1);
+  }
+
+  delay(500); // Wachten om de sensor op te starten
+}
+
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure; // Definitie van het meetobject voor de VL53L0X-sensor
+  
+  lox.rangingTest(&measure, false); // Uitvoeren van een afstandsmeting met de VL53L0X-sensor
+
+  if (measure.RangeStatus != 4) {  // Controleren of de meting geldig is
+    int distance = measure.RangeMilliMeter; // Uitlezen van de gemeten afstand in millimeters
+    Serial.print("Distance (mm): "); // Uitvoer van het label "Distance (mm): "
+    Serial.println(distance); // Uitvoer van de gemeten afstand
+    
+    delay(50); // Aanpassen van deze vertraging om de responsiviteit van het systeem te regelen
+  } else {
+    Serial.println("Out of range"); // Uitvoer van een melding wanneer de gemeten afstand buiten bereik is
+  }
+}
+```
 
 ### *PID berekening*
 
