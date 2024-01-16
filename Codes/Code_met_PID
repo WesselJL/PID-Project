@@ -1,4 +1,3 @@
-```ruby
 #include "Adafruit_VL53L0X.h" // Inclusie van de Adafruit VL53L0X-bibliotheek
 #include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek
 
@@ -88,4 +87,4 @@ double readSensor() {
     return 0.0;  // Geef 0 terug als de meting buiten bereik is
   }
 }
-```
+
