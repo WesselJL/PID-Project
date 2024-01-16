@@ -45,10 +45,19 @@ De code voor dit bal balanceer project d.m.v. PID is gestart door eerst een syst
 
 ### *Code zonder PID*
 
+Dit onderstaande gedeelte is het toevoegen van de gebruikte libaries. Zoals de comments het al zeggen zijn het de libaries voor de I2C communicatie, time of flight sensor en de servo motor.
+
 ```ruby
 #include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
 #include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
 #include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek voor de Servo-motor
+```
+Dan als volgende is het de pin initialisatie van de servo motor, initialisatie van de VL53LOX variabele en de servo variabele.
+
+```ruby
+#define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing van de Servo-motor
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+Servo servo; // Initialisatie van de Servo motor
 ```
 
 ### *PID berekening*
