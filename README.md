@@ -174,7 +174,7 @@ double previous; // Vorige foutwaarde voor de differentiërende term in de PID-r
 ```
 De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds geïnitialiseerd en de servo positie wordt weer naar een "start" waarde gezet. Voordat de loop wordt uitgelegd zal eerste het deel wat de PID waarde berekent aan bod komen. 
 
-> [!IMPORTANT]
+> [!WARNING]
 > De goeie waardes voor P, I en D om een stabiel systeem te krijgen verschillen voor elke opstelling. Door middel van trial en error kan je de waardes voor jou systeem vinden.
 
 Hieronder !SVEN KAN JIJ DIT UITLEGGEN, IK NIET SNAP/ IK KAN NIET GOED GENOEG UITLEGGEN! <3 DANKU <3 
