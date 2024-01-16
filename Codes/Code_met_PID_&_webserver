@@ -1,60 +1,58 @@
 // Load library's
-#include <WiFi.h> // Inclusie van de WiFi-bibliotheek
-#include "Adafruit_VL53L0X.h" // Inclusie van de Adafruit VL53L0X-bibliotheek
-#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek
+#include <WiFi.h>
+#include "Adafruit_VL53L0X.h"
+#include <ESP32Servo.h>
 
-#define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing Servo-motor
+#define SERVO_PIN 12
+Adafruit_VL53L0X lox = Adafruit_VL53L0X();
+Servo myServo;
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
-Servo myServo; // Initialisatie van het Servo-object
-
+// Arrays voor grafiekdata
 int arrayY[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 int arrayX[10]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
 
-double sensorValue; // Variabele voor het opslaan van de gelezen sensorwaarde
-double currentTime; // Huidige tijdvariabele voor het regelen van de meetfrequentie
-double lastTime; // Variabele voor het opslaan van de laatste tijd
-float P = 2; // Proportionele term voor de PID-regelaar
-float I = 0.1; // Integratieve term voor de PID-regelaar
-float D = 0.01; // Differentiërende term voor de PID-regelaar
-double error; // Variabele voor het opslaan van de fout in de regeling
-double dt; // Tijd tussen metingen voor de PID-regelaar
-double setpoint = 550; // Gewenste sensorwaarde
-double previous; // Vorige foutwaarde voor de differentiërende term in de PID-regelaar
+double sensorValue; // Variabele om de sensorwaarde op te slaan
+double currentTime; // Huidige tijd voor tijdsberekeningen
+double lastTime; // Tijd van de vorige meting
+float P = 2; // Proportionele term van PID-controller
+float I = 0.1; // Integrale term van PID-controller
+float D = 0.01; // Afgeleide term van PID-controller
+double error; // Fout tussen gewenste en gemeten waarde
+double dt; // Tijdverschil sinds de laatste meting
+double setpoint = 550; // Gewenste waarde
+double previous; // Vorige foutwaarde
 
-// Vervang met uw netwerkreferenties
+// Netwerkgegevens
 const char* ssid = "ESP32-Access-Point";
 const char* password = "123456789";
 
-// Stel het poortnummer van de webserver in op 80
+// Webserver op poort 80
 WiFiServer server(80);
 
-// Variabele om het HTTP-verzoek op te slaan
+// Variabele voor het opslaan van het HTTP-verzoek
 String header;
 
 void setup() {
-  Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
-
-  // Wachten tot de seriële poort open is voor native USB-apparaten
+  Serial.begin(115200);
+  // Wacht tot de seriële poort is geopend voor native USB-apparaten
   while (!Serial) {
     delay(1);
   }
 
-  myServo.attach(SERVO_PIN); // Koppeling van het Servo-object aan de gedefinieerde pin
-  myServo.write(135);  // Instellen van de initiële positie van de Servo-motor
+  myServo.attach(SERVO_PIN);
+  myServo.write(135);  // Zet de initiële positie van de servo
 
   Serial.println("Adafruit VL53L0X test");
   if (!lox.begin()) {
     Serial.println(F("Failed to boot VL53L0X"));
     while (1);
   }
-
-  // Vermogen
+  // Stroom
   Serial.println(F("VL53L0X API Simple Ranging example\n\n"));
 
-  // Verbinding maken met het Wi-Fi-netwerk met SSID en wachtwoord
+  // Verbind met het Wi-Fi-netwerk met SSID en wachtwoord
   Serial.print("Setting AP (Access Point)…");
-  // Verwijder het wachtwoordparameter als u wilt dat de AP (Access Point) open is
+  // Verwijder het wachtwoordparameter als je wilt dat het AP (Access Point) open is
   WiFi.softAP(ssid, password);
 
   IPAddress IP = WiFi.softAPIP();
@@ -65,67 +63,156 @@ void setup() {
 }
 
 void loop() {
-  if (millis() - currentTime >= 50) { // Regel de meetfrequentie
+  if (millis() - currentTime >= 50) {
     currentTime = millis();
     double now = millis();
-    dt = (now - lastTime) / 1000.0; // Bereken de tijd tussen metingen
+    dt = (now - lastTime) / 1000.0;
     lastTime = now;
 
-    sensorValue = readSensor(); // Lees de sensorwaarde
-    sensorValue = map(sensorValue, 20.0, 350.0, 0.0, 1000.0); // Mapping van de sensorwaarde naar een specifiek bereik
-    error = setpoint - sensorValue; // Bereken de fout in de regeling
-    double output = calculatePID(); // Bereken de PID-uitvoer
+    sensorValue = readSensor();
+    sensorValue = map(sensorValue, 20.0, 350.0, 0.0, 1000.0);
+    error = setpoint - sensorValue;
+    double output = calculatePID();
 
-    output = map(output, -1000, 1000, 210, 60); // Mapping van de PID-uitvoer naar een geschikt bereik
+    output = map(output, -1000, 1000, 210, 60);
+  
+    if(output < 60){output = 60;}
+    if(output > 220) {output = 220;}
 
-    // Begrens de servo-uitvoer binnen bepaalde grenzen
-    if (output < 60) {
-      output = 60;
-    }
-    if (output > 220) {
-      output = 220;
-    }
+    myServo.write(output); 
 
-    myServo.write(output); // Stuur de Servo-motor aan naar de berekende positie
-
-    Serial.println(output); // Uitvoer van de PID-uitvoer
-    Serial.println(sensorValue); // Uitvoer van de gemeten sensorwaarde
+    Serial.println(output);
+    Serial.println(sensorValue);
   }
-
-  executeWiFi(); // Functie voor het afhandelen van WiFi-verzoeken
+  executeWiFi();
 }
 
+// Bereken de PID-uitvoer
 double calculatePID() {
-  double proportioneel = error * P; // Bereken de proportionele term
-  double integraal = (integraal + error * dt) * I; // Bereken de integratieve term
-  double differentiaal = ((error - previous) / dt) * D; // Bereken de differentiërende term
-  previous = error; // Bijwerken van de vorige foutwaarde
-  return (proportioneel + integraal + differentiaal); // Bereken de totale PID-uitvoer
+  double proportioneel = error * P;
+  double integraal = (integraal + error * dt) * I;
+  double differentiaal = ((error - previous) / dt) * D;
+  previous = error;
+  return (proportioneel + integraal + differentiaal);
 }
 
+// Lees sensorwaarde
 double readSensor() {
-  // Lees de sensorwaarde
   VL53L0X_RangingMeasurementData_t measure;
-  lox.rangingTest(&measure, false); // Stuur 'true' om debuggegevens af te drukken!
+  lox.rangingTest(&measure, false); // 'true' meegeven voor debuggegevens!
 
-  // Schrijf de sensorwaarde
   if (measure.RangeStatus != 4) {  // Fasefouten hebben onjuiste gegevens
     return measure.RangeMilliMeter;
   } else {
     Serial.println(" out of range ");
-    return 0.0;  // Geef 0 terug als de meting buiten bereik is
+    return 0.0;  // Return 0 als buiten bereik
   }
 }
 
-void executeWiFi() {
-  WiFiClient client = server.available(); // Luisteren naar inkomende clients
+// Verwerk het HTTP-verzoek voor de webpagina en de update van PID-parameters
+void executeWiFi(){
+  WiFiClient client = server.available(); // Wacht op inkomende clients
 
-  if (client) { // Als er een nieuwe client verbinding maakt,
-    Serial.println("New Client."); // Print een bericht in de seriële monitor
+  if (client) { // Als een nieuwe client verbinding maakt,
+    Serial.println("New Client."); // Print een bericht in de seriële poort
     String currentLine = ""; // Maak een String om inkomende gegevens van de client op te slaan
-    while (client.connected()) { // Lus terwijl de client verbonden is
-      if (client.available()) { // Als er bytes zijn om te lezen van de client,
-        char c = client.read(); // Lees een byte, en
-        Serial.write(c); // Print het uit naar de seriële monitor
+    while (client.connected()) { // Loop terwijl de client verbonden is
+      if (client.available()) { // Als er bytes zijn om van de client te lezen,
+        char c = client.read(); // Lees een byte, dan
+        Serial.write(c); // Print het naar de seriële monitor
         header += c;
-        if (
+        if (c == '\n') { // Als de byte een nieuwe-regelkarakter is
+          // Als de huidige regel leeg is, zijn er twee nieuwe-regelkarakters achter elkaar.
+          // Dat is het einde van het client HTTP-verzoek, dus stuur een antwoord:
+          if (currentLine.length() == 0) {
+            // HTTP-headers beginnen altijd met een responscode (bijv. HTTP/1.1 200 OK)
+            // en een inhoudstype zodat de client weet wat er komt, gevolgd door een lege regel:
+            client.println("HTTP/1.1 200 OK");
+            client.println("Content-type:text/html");
+            client.println("Connection: close");
+            client.println();
+
+            // Verwerk het formulierinzending
+            if (header.indexOf("POST /update") >= 0) {
+              // Lees de POST-gegevens
+              String postBody = "";
+              while (client.available()) {
+                char c = client.read();
+                postBody += c;
+              }
+
+              // Haal de waarde van de P, I en D parameters uit de POST-gegevens
+              updateParameter(postBody, "P", P);
+              updateParameter(postBody, "I", I);
+              updateParameter(postBody, "D", D);
+            }
+
+            // Toon de HTML-webpagina
+            client.println("<!DOCTYPE html><html>");
+            client.println("<head>");
+            client.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+            client.println("</head>");
+            client.println("<body>");
+
+            // Werk de formulieractie bij om de POST-methode te gebruiken
+            client.println("<form action=\"/update\" method=\"post\">");
+
+            // Werk de waarde van de tekstvelden bij met de huidige waarden van P, I en D
+            client.println("<p>P: <input type=\"text\" name=\"P\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(P) + "\"></p>");
+            client.println("<p>I: <input type=\"text\" name=\"I\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(I) + "\"></p>");
+            client.println("<p>D: <input type=\"text\" name=\"D\" class=\"text-field\" pattern=\"[+-]?([0-9]*[.])?[0-9]+\" value=\"" + String(D) + "\"></p>");
+
+            // Voeg een verzendknop toe voor elke variabele om de formulierinzending te activeren
+            client.println("<p><input type=\"submit\" name=\"updateP\" value=\"Update Values\"></p>");
+
+            // Voeg een canvas toe voor de grafiek
+            client.println("<canvas id=\"myCanvas\" width=\"400\" height=\"200\"></canvas>");
+
+            // JavaScript-code om de grafiek te maken met behulp van canvas
+            client.println("<script>");
+            client.println("var canvas = document.getElementById('myCanvas');");
+            client.println("var ctx = canvas.getContext('2d');");
+            client.println("var xValues = [" + String(arrayX[0]) + "," + String(arrayX[1]) + "," + String(arrayX[2]) + "," + String(arrayX[3]) + "," + String(arrayX[4]) + "," + String(arrayX[5]) + "," + String(arrayX[6]) + "," + String(arrayX[7]) + "," + String(arrayX[8]) + "," + String(arrayX[9]) + "];");
+            client.println("var yValues = [" + String(arrayY[0]) + "," + String(arrayY[1]) + "," + String(arrayY[2]) + "," + String(arrayY[3]) + "," + String(arrayY[4]) + "," + String(arrayY[5]) + "," + String(arrayY[6]) + "," + String(arrayY[7]) + "," + String(arrayY[8]) + "," + String(arrayY[9]) + "];");
+            client.println("ctx.beginPath();");
+            client.println("ctx.moveTo(xValues[0], yValues[0]);");
+            client.println("for (var i = 1; i < xValues.length; i++) {");
+            client.println("  ctx.lineTo(xValues[i], yValues[i]);");
+            client.println("}");
+            client.println("ctx.stroke();");
+            client.println("</script>");
+
+            client.println("</form>");
+            client.println("</body></html>");
+
+            // Het HTTP-antwoord eindigt met nog een lege regel
+            client.println();
+            // Breek uit de while-lus
+            break;
+          } else { // Als je een nieuwe-regelkarakter hebt, maak dan currentLine leeg
+            currentLine = "";
+          }
+        } else if (c != '\r') { // Als je iets anders dan een carriage return-karakter hebt,
+          currentLine += c;     // Voeg het toe aan het einde van currentLine
+        }
+      }
+    }
+    // Maak de header-variabele leeg
+    header = "";
+    // Sluit de verbinding
+    client.stop();
+    Serial.println("Client disconnected.");
+    Serial.println("");
+  }
+}
+
+// Werk de PID-parameter bij op basis van de POST-gegevens
+void updateParameter(String postBody, String paramName, float &param) {
+  int paramIndex = postBody.indexOf(paramName + "=");
+  if (paramIndex != -1) {
+    String paramValue = postBody.substring(paramIndex + paramName.length() + 1);
+    param = paramValue.toFloat(); // Zet de string om naar een float en werk de parameter bij
+    Serial.print("Updated " + paramName + ": ");
+    Serial.println(param);
+  }
+}
