@@ -1,85 +1,91 @@
-#include "Adafruit_VL53L0X.h"
-#include <ESP32Servo.h>
+```ruby
+#include "Adafruit_VL53L0X.h" // Inclusie van de Adafruit VL53L0X-bibliotheek
+#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek
 
-#define SERVO_PIN 12
+#define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing Servo-motor
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X();
-Servo myServo;
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+Servo myServo; // Initialisatie van het Servo-object
 
-double sensorValue;
-double currentTime;
-double lastTime;
-double P = 2;
-double I = 0.1;
-double D = 0.1;
-double error;
-double dt;
-double setpoint = 550;
-double previous;
+double sensorValue; // Variabele voor het opslaan van de gelezen sensorwaarde
+double currentTime; // Huidige tijdvariabele voor het regelen van de meetfrequentie
+double lastTime; // Variabele voor het opslaan van de laatste tijd
+double P = 2; // Proportionele term voor de PID-regelaar
+double I = 0.1; // Integratieve term voor de PID-regelaar
+double D = 0.1; // Differentiërende term voor de PID-regelaar
+double error; // Variabele voor het opslaan van de fout in de regeling
+double dt; // Tijd tussen metingen voor de PID-regelaar
+double setpoint = 550; // Gewenste sensorwaarde
+double previous; // Vorige foutwaarde voor de differentiërende term in de PID-regelaar
 
 void setup() {
-  Serial.begin(115200);
+  Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
 
-  // wait until the serial port opens for native USB devices
+  // Wachten tot de seriële poort open is voor native USB-apparaten
   while (!Serial) {
     delay(1);
   }
 
-  myServo.attach(SERVO_PIN);
-  myServo.write(135);  // Set the initial position of the servo
+  myServo.attach(SERVO_PIN); // Koppeling van het Servo-object aan de gedefinieerde pin
+  myServo.write(135);  // Instellen van de initiële positie van de Servo-motor
 
   Serial.println("Adafruit VL53L0X test");
   if (!lox.begin()) {
     Serial.println(F("Failed to boot VL53L0X"));
     while (1);
   }
-  // power 
+  
   Serial.println(F("VL53L0X API Simple Ranging example\n\n"));
 }
 
 void loop() {
-  if (millis() - currentTime >= 50) {
+  if (millis() - currentTime >= 50) { // Regel de meetfrequentie
     currentTime = millis();
     double now = millis();
-    dt = (now - lastTime) / 1000.0;
+    dt = (now - lastTime) / 1000.0; // Bereken de tijd tussen metingen
     lastTime = now;
 
-    sensorValue = readSensor();
-    sensorValue = map(sensorValue, 20.0, 350.0, 0.0, 1000.0);
-    error = setpoint - sensorValue;
-    double output = calculatePID();
+    sensorValue = readSensor(); // Lees de sensorwaarde
+    sensorValue = map(sensorValue, 20.0, 350.0, 0.0, 1000.0); // Mapping van de sensorwaarde naar een specifiek bereik
+    error = setpoint - sensorValue; // Bereken de fout in de regeling
+    double output = calculatePID(); // Bereken de PID-uitvoer
 
-    output = map(output, -1000, 1000, 210, 60);
-  
-    if(output < 60){output = 60;}
-    if(output > 220) {output = 220;}
+    output = map(output, -1000, 1000, 210, 60); // Mapping van de PID-uitvoer naar een geschikt bereik
 
-    myServo.write(output); 
+    // Begrens de servo-uitvoer binnen bepaalde grenzen
+    if (output < 60) {
+      output = 60;
+    }
+    if (output > 220) {
+      output = 220;
+    }
 
-    Serial.println(output);
-    Serial.println(sensorValue);
+    myServo.write(output); // Stuur de Servo-motor aan naar de berekende positie
+
+    Serial.println(output); // Uitvoer van de PID-uitvoer
+    Serial.println(sensorValue); // Uitvoer van de gemeten sensorwaarde
   }
 }
 
 double calculatePID() {
-  double proportioneel = error * P;
-  double integraal = (integraal + error * dt) * I;
-  double differentiaal = ((error - previous) / dt) * D;
-  previous = error;
-  return (proportioneel + integraal + differentiaal);
+  double proportioneel = error * P; // Bereken de proportionele term
+  double integraal = (integraal + error * dt) * I; // Bereken de integratieve term
+  double differentiaal = ((error - previous) / dt) * D; // Bereken de differentiërende term
+  previous = error; // Bijwerken van de vorige foutwaarde
+  return (proportioneel + integraal + differentiaal); // Bereken de totale PID-uitvoer
 }
 
 double readSensor() {
-  // Read sensor value
+  // Lees de sensorwaarde
   VL53L0X_RangingMeasurementData_t measure;
-  lox.rangingTest(&measure, false); // pass in 'true' to get debug data printout!
+  lox.rangingTest(&measure, false); // Stuur 'true' om debuggegevens af te drukken!
 
-  // Write sensor value
-  if (measure.RangeStatus != 4) {  // phase failures have incorrect data
+  // Schrijf de sensorwaarde
+  if (measure.RangeStatus != 4) {  // Fasefouten hebben onjuiste gegevens
     return measure.RangeMilliMeter;
   } else {
     Serial.println(" out of range ");
-    return 0.0;  // Return 0 if out of range
+    return 0.0;  // Geef 0 terug als de meting buiten bereik is
   }
 }
-
+```
