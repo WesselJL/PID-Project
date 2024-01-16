@@ -1,10 +1,10 @@
-#include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
-#include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
-#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek voor de Servo-motor
+#include <Wire.h> // libary voor I2C-communicatie
+#include <Adafruit_VL53L0X.h> // Adafruit VL53L0X sensor libary 
+#include <ESP32Servo.h> // servo motor libary
 
 #define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing van de Servo-motor
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van de sensor variabele
 Servo servo; // Initialisatie van de Servo motor
 
 void setup() {
@@ -16,14 +16,14 @@ void setup() {
     while (1);
   }
 
-  servo.attach(SERVO_PIN); // Koppeling van de Servo-object aan de gedefinieerde pin
+  servo.attach(SERVO_PIN); // Koppeling van de Servo variabele aan de gedefinieerde pin
   servo.write(90); // Instellen van de initiële positie van de Servo-motor op 90 graden
 
   delay(500); // Wachten om de Servo-motor naar de initiële positie te laten bewegen
 }
 
 void loop() {
-  VL53L0X_RangingMeasurementData_t measure; // Definitie van het meetobject voor de VL53L0X-sensor
+  VL53L0X_RangingMeasurementData_t measure; // Definitie van de bal voor de VL53L0X-sensor
   
   lox.rangingTest(&measure, false); // Uitvoeren van een afstandsmeting met de VL53L0X-sensor
 
