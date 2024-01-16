@@ -154,6 +154,8 @@ $K_i$ : Dit is de integrale factor van het systeem
 
 $K_d$ : Dit is de afgeleide factor van het systeem
 
+Deze formule berekent op basis van de fout tussen het gewenste punt/ waarde en de huidige waarde een output waarde die bijvoorbeeld de aansturing van een motor, de positie van een servo of de tempratuur in je huis aan geeft. $e(t)$ is de fout op een bepaald moment in de tijd en het verschil tussen de waarde waar je wilt eindigen en de werkelijke waarde op dat moment. $K_p$ is de proportionele factor van het systeem, deze waarde bepaalt hoe sterk de uitvoer reageert op de directe fout. $K_i$ is de integrale factor. Deze factor neemt de afwijkingen uit het verleden en telt de waardes op en corrigeert daarmee binnen I-tijd (in seconden) de aansturing/ output waarde. $K_d$ Dit is de afgeleide factor van het systeem en meet de snelheid waarmee de fout veranderd. Dit zorgt er voor dat overshoot wordt verminderd (het voorbij de vooraf ingestelde waarde/ setpoint gaan). Voor meer uitgebreide informatie en voorbeelden van PID systemen zie [Deze link naar de uitleg](https://nl.wikipedia.org/wiki/PID-regelaar).
+
 ### *Code met PID*
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
