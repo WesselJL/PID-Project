@@ -235,7 +235,7 @@ Om de PID waardes te veranderen in een web interface wordt er in de setup van de
 
   server.begin();
 ```
-In de void executeWiFI worden een heel aantal dingen gedaan en hieronder worden de belangrijkste dingen toegelicht:
+In de void executeWiFi worden een heel aantal dingen gedaan en hieronder worden de belangrijkste dingen toegelicht:
 
 om de HTML webpagina te tonen met 3 invoer velden van de PID waardes en 3 bevestigings knoppen wordt de volgende code gebruikt
 ```ruby
@@ -257,7 +257,7 @@ om de HTML webpagina te tonen met 3 invoer velden van de PID waardes en 3 bevest
             // Voeg een verzendknop toe voor elke variabele om de formulierinzending te activeren
             client.println("<p><input type=\"submit\" name=\"updateP\" value=\"Update Values\"></p>");
 ```
-Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabeles die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
+Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnaast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabeles die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
 
 ```ruby
 // Werk de PID-parameter bij op basis van de POST-gegevens
