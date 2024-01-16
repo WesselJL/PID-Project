@@ -1,10 +1,10 @@
-#include "Adafruit_VL53L0X.h" // Inclusie van de Adafruit VL53L0X-bibliotheek
-#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek
+#include "Adafruit_VL53L0X.h" // Adafruit VL53L0X sensor libary 
+#include <ESP32Servo.h> // libary voor de servo motor
 
 #define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing Servo-motor
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
-Servo myServo; // Initialisatie van het Servo-object
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van de VL53L0X variabele
+Servo myServo; // Initialisatie van de servo variabele
 
 double sensorValue; // Variabele voor het opslaan van de gelezen sensorwaarde
 double currentTime; // Huidige tijdvariabele voor het regelen van de meetfrequentie
@@ -20,12 +20,12 @@ double previous; // Vorige foutwaarde voor de differentiërende term in de PID-r
 void setup() {
   Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
 
-  // Wachten tot de seriële poort open is voor native USB-apparaten
+  // Wachten tot de seriële poort open is voor USB-apparaten
   while (!Serial) {
     delay(1);
   }
 
-  myServo.attach(SERVO_PIN); // Koppeling van het Servo-object aan de gedefinieerde pin
+  myServo.attach(SERVO_PIN); // Koppeling van de servo variabele aan de gedefinieerde pin
   myServo.write(135);  // Instellen van de initiële positie van de Servo-motor
 
   Serial.println("Adafruit VL53L0X test");
