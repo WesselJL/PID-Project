@@ -222,7 +222,7 @@ void loop() {
 ```
 !SVEN KAN JIJ DIT DEEL OOK UITLEGGEN? <3
 
-De code met PID kan je zien in de volgende [video]([https://youtu.be/PQ2CX1DTkAU](https://youtu.be/Alv6lQySq_s))
+De code met PID kan je zien in de volgende [video](https://youtu.be/Alv6lQySq_s)
 
 ### *Code voor het veranderen van PID waardes in web interface* 
 
