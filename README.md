@@ -230,7 +230,7 @@ void loop() {
 ```
 De loop begint met een if statement die ervoor zorgt dat het programma onder de if elke 50ms wordt uitgevoerd. 50ms is gekozen omdat de servo niet sneller kan reageren.
 
-Vervolgens wordt de exacte dt berekend die tussen de cycles in zit, dit is nodig om precies de Integraal en Differentiaal te kunnen regelen. 
+Vervolgens wordt de exacte $d(t)$ berekend die tussen de cycles in zit, dit is nodig om precies de Integraal en Differentiaal te kunnen regelen. 
 
 Daaronder wordt de Sensor uitgelezen, gemapt naar 0 tot 1000, de error berekend en de calculatePID berekening aangeroepen. 
 
