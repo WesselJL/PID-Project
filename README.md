@@ -77,7 +77,7 @@ void setup() {
   delay(500); // Wachten om de Servo-motor naar de initiële positie te laten bewegen
 }
 ```
-In de loop van het programma wordt de afstand tot de bal gemeten door de sensor en wordt er gecontroleerd of deze meting een geldige meting is. Daarna wordt de de minimale sensor waarde en de maximale waarde omgezet naar een servo waarde van 0 tot 180. Dit wordt gedaan met de "map" functie. Vervolgens wordt de variabele "servoPosition" naar de Servo gestuurd. In de volgende video kan je zien hoe de bal gebalanceerd wordt zonder PID [Youtube video balanceren zonder PID](https://youtu.be/PQ2CX1DTkAU)
+In de loop van het programma wordt de afstand tot de bal gemeten door de sensor en wordt er gecontroleerd of deze meting een geldige meting is. Daarna wordt de de minimale sensor waarde en de maximale waarde omgezet naar een servo waarde van 0 tot 180. Dit wordt gedaan met de "map" functie. Vervolgens wordt de variabele "servoPosition" naar de Servo gestuurd. In de volgende video kan je zien hoe de bal gebalanceerd wordt zonder PID: [Video: bal balanceren zonder PID](https://youtu.be/PQ2CX1DTkAU)
 
 ```ruby
 void loop() {
