@@ -178,7 +178,7 @@ De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds
 > De goeie waardes voor P, I en D om een stabiel systeem te krijgen verschillen voor elke opstelling. Door middel van trial en error kan je de waardes voor jou systeem vinden.
 
 Hieronder !SVEN KAN JIJ DIT UITLEGGEN, IK NIET SNAP/ IK KAN NIET GOED GENOEG UITLEGGEN! <3 DANKU <3 
-
+Sven
 ```ruby
 double calculatePID() {
   double proportioneel = error * P; // Bereken de proportionele term
