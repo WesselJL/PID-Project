@@ -77,6 +77,29 @@ void setup() {
   delay(500); // Wachten om de Servo-motor naar de initiële positie te laten bewegen
 }
 ```
+In de loop van het programma wordt de afstand tot de bal gemeten door de sensor en wordt er gecontroleerd of deze meting een geldige meting is. Daarna wordt de de minimale sensor waarde en de maximale waarde omgezet naar een servo waarde van 0 tot 180. Dit wordt gedaan met de "map" functie. Vervolgens wordt de variabele "servoPosition" naar de Servo gestuurd. In de volgende video kan je zien hoe de bal gebalanceerd wordt zonder PID [Youtube video balanceren zonder PID](https://youtu.be/PQ2CX1DTkAU)
+
+```ruby
+void loop() {
+  VL53L0X_RangingMeasurementData_t measure; // Definitie van het meetobject voor de VL53L0X-sensor
+  
+  lox.rangingTest(&measure, false); // Uitvoeren van een afstandsmeting met de VL53L0X-sensor
+
+  if (measure.RangeStatus != 4) {  // Controleren of de meting geldig is
+    int distance = measure.RangeMilliMeter; // Uitlezen van de gemeten afstand in millimeters
+    Serial.print("Distance (mm): "); // Uitvoer van het label "Distance (mm): "
+    Serial.println(distance); // Uitvoer van de gemeten afstand
+    
+    // Aanpassen van de positie van de Servo-motor op basis van de gemeten afstand
+    int servoPosition = map(distance, 20, 270, 0, 180); // Aanpassen van de mapping-bereik op basis van de opstelling
+    servo.write(servoPosition); // Aansturen van de Servo-motor naar de berekende positie
+    
+    delay(50); // Aanpassen van deze vertraging om de responsiviteit van het systeem te regelen
+  } else {
+    Serial.println("Out of range"); // Uitvoer van een melding wanneer de gemeten afstand buiten bereik is
+  }
+}
+```
 
 ### *PID berekening*
 
