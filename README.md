@@ -48,15 +48,15 @@ De code voor dit bal balanceer project d.m.v. PID is gestart door eerst een syst
 Dit onderstaande gedeelte is het toevoegen van de gebruikte libaries. Zoals de comments het al zeggen zijn het de libaries voor de I2C communicatie, time of flight sensor en de servo motor.
 
 ```ruby
-#include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
-#include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
-#include <ESP32Servo.h> // Inclusie van de ESP32Servo-bibliotheek voor de Servo-motor
+#include <Wire.h> // libary voor I2C-communicatie
+#include <Adafruit_VL53L0X.h> // VL53L0X sensor libary 
+#include <ESP32Servo.h> // libary voor Servo motor
 ```
 Dan als volgende is het de pin initialisatie van de servo motor, initialisatie van de VL53LOX variabele en de servo variabele.
 
 ```ruby
 #define SERVO_PIN 12 // Definitie van de pin (PIN 12) voor de uitvoer van de aansturing van de Servo-motor
-Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van de sensor variabele
 Servo servo; // Initialisatie van de Servo motor
 ```
 In de setup van het programma wordt de seriële communicatie opgesteld en wordt er gecontroleerd of de VL53LOX juist is opgestart. Wanneer dit niet het geval is dan wordt er een foutmelding in de seriële monitor geprint. Daarnaast wordt ook de servo variabele gekoppeld aan de Servo pin en wordt de positie van de servo motor ingesteld op 90 graden, dit is de start positie.
@@ -64,14 +64,14 @@ In de setup van het programma wordt de seriële communicatie opgesteld en wordt 
 ```ruby
 void setup() {
   Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
-  Serial.println("Ping Pong Ball Balancing"); // Uitvoer van een begroetingsbericht
+  Serial.println("Ping Pong Ball Balancing"); // Uitvoer van een start bericht
 
   if (!lox.begin()) { // Controle op het starten van de VL53L0X-sensor
     Serial.println(F("Failed to boot VL53L0X")); // Uitvoer van een foutmelding bij mislukken en stoppen van het programma
     while (1);
   }
 
-  servo.attach(SERVO_PIN); // Koppeling van de Servo-object aan de gedefinieerde pin
+  servo.attach(SERVO_PIN); // Koppeling van de Servo variabele aan de gedefinieerde pin
   servo.write(90); // Instellen van de initiële positie van de Servo-motor op 90 graden
 
   delay(500); // Wachten om de Servo-motor naar de initiële positie te laten bewegen
@@ -81,7 +81,7 @@ In de loop van het programma wordt de afstand tot de bal gemeten door de sensor 
 
 ```ruby
 void loop() {
-  VL53L0X_RangingMeasurementData_t measure; // Definitie van het meetobject voor de VL53L0X-sensor
+  VL53L0X_RangingMeasurementData_t measure; // Definitie van de bal voor de VL53L0X-sensor
   
   lox.rangingTest(&measure, false); // Uitvoeren van een afstandsmeting met de VL53L0X-sensor
 
@@ -104,10 +104,10 @@ void loop() {
 > De waardes 20 & 270 in de 'int servoPosition = map(distance, 20, 270, 0, 180);' line moeten worden aangepast naar de minimale en maximale sensor waarde van je eigen sensor. Deze zijn te verkrijgen door je object wat gebalanceerd moet worden op zijn positie die het dichtsbij de sensor zit en het verste weg van de sensor zit. Deze zijn uit te lezen door het uitvoeren van onderstaande code:
 
 ```ruby
-#include <Wire.h> // Inclusie van de Wire-bibliotheek voor I2C-communicatie
-#include <Adafruit_VL53L0X.h> // Inclusie van de Adafruit VL53L0X-bibliotheek voor de Time-of-Flight-sensor
+#include <Wire.h> // libary voor I2C-communicatie
+#include <Adafruit_VL53L0X.h> // libary voor VL53L0X sensor
 
-Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van het VL53L0X-object
+Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van de VL53L0X variabele
 
 void setup() {
   Serial.begin(115200); // Initialisatie van de seriële communicatie met een baudrate van 115200 bps
@@ -122,7 +122,7 @@ void setup() {
 }
 
 void loop() {
-  VL53L0X_RangingMeasurementData_t measure; // Definitie van het meetobject voor de VL53L0X-sensor
+  VL53L0X_RangingMeasurementData_t measure; // Definitie van de bal voor de VL53L0X-sensor
   
   lox.rangingTest(&measure, false); // Uitvoeren van een afstandsmeting met de VL53L0X-sensor
 
@@ -178,7 +178,7 @@ De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds
 > De goeie waardes voor P, I en D om een stabiel systeem te krijgen verschillen voor elke opstelling. Door middel van trial en error kan je de waardes voor jou systeem vinden.
 
 Hieronder !SVEN KAN JIJ DIT UITLEGGEN, IK NIET SNAP/ IK KAN NIET GOED GENOEG UITLEGGEN! <3 DANKU <3 
-Sven
+
 ```ruby
 double calculatePID() {
   double proportioneel = error * P; // Bereken de proportionele term
