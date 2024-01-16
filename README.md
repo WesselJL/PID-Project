@@ -228,7 +228,15 @@ void loop() {
   }
 }
 ```
-!SVEN KAN JIJ DIT DEEL OOK UITLEGGEN? <3
+De loop begint met een if statement die ervoor zorgt dat het programma onder de if elke 50ms wordt uitgevoerd. 50ms is gekozen omdat de servo niet sneller kan reageren.
+
+Vervolgens wordt de exacte dt berekend die tussen de cycles in zit, dit is nodig om precies de Integraal en Differentiaal te kunnen regelen. 
+
+Daaronder wordt de Sensor uitgelezen, gemapt naar 0 tot 1000, de error berekend en de calculatePID berekening aangeroepen. 
+
+Uiteindelijk wordt de output gemapt naar een geschikt bereik voor de servo. 210 is de meest lage stand en 60 is de meest hoge stand.
+
+Met *myServo.write(output);* wordt de servo nog geüpdate. 
 
 De code met PID kan je zien in de volgende [video](https://youtu.be/Alv6lQySq_s)
 
