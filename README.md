@@ -154,9 +154,70 @@ $K_i$ : Dit is de integrale factor van het systeem
 
 $K_d$ : Dit is de afgeleide factor van het systeem
 
-Deze formule berekent op basis van de fout tussen het gewenste punt/ waarde en de huidige waarde een output waarde die bijvoorbeeld de aansturing van een motor, de positie van een servo of de tempratuur in je huis aan geeft. $e(t)$ is de fout op een bepaald moment in de tijd en het verschil tussen de waarde waar je wilt eindigen en de werkelijke waarde op dat moment. $K_p$ is de proportionele factor van het systeem, deze waarde bepaalt hoe sterk de uitvoer reageert op de directe fout. $K_i$ is de integrale factor. Deze factor neemt de afwijkingen uit het verleden en telt de waardes op en corrigeert daarmee binnen I-tijd (in seconden) de aansturing/ output waarde. $K_d$ Dit is de afgeleide factor van het systeem en meet de snelheid waarmee de fout veranderd. Dit zorgt er voor dat overshoot wordt verminderd (het voorbij de vooraf ingestelde waarde/ setpoint gaan). Voor meer uitgebreide informatie en voorbeelden van PID systemen zie [Deze link naar de uitleg](https://nl.wikipedia.org/wiki/PID-regelaar).
+Deze formule berekent op basis van de fout tussen het gewenste punt/ waarde en de huidige waarde een output waarde die bijvoorbeeld de aansturing van een motor, de positie van een servo of de tempratuur in je huis aan geeft. $e(t)$ is de fout op een bepaald moment in de tijd en het verschil tussen de waarde waar je wilt eindigen en de werkelijke waarde op dat moment. $K_p$ is de proportionele factor van het systeem, deze waarde bepaalt hoe sterk de uitvoer reageert op de directe fout. $K_i$ is de integrale factor. Deze factor neemt de afwijkingen uit het verleden en telt de waardes op en corrigeert daarmee binnen I-tijd (in seconden) de aansturing/ output waarde. $K_d$ Dit is de afgeleide factor van het systeem en meet de snelheid waarmee de fout veranderd. Dit zorgt er voor dat overshoot wordt verminderd (het voorbij de vooraf ingestelde waarde/ setpoint gaan). Voor meer uitgebreide informatie en voorbeelden van PID systemen zie [deze link naar de uitleg](https://nl.wikipedia.org/wiki/PID-regelaar).
 
 ### *Code met PID*
+
+In de code voor het balanceren van de bal met een PID regeling worden er een flink aantal extra variabele in de code toegevoegd. Deze variabele zijn de huidige tijd en de laatste tijd, de waardes voor P, I en D en de error die het systeem heeft. Daarnaast is er ook nog een variabele om de tijd in op te slaan tussen de metingen en een variabele voor de vorige foutwaarde.
+
+```ruby
+double sensorValue; // Variabele voor het opslaan van de gelezen sensorwaarde
+double currentTime; // Huidige tijdvariabele voor het regelen van de meetfrequentie
+double lastTime; // Variabele voor het opslaan van de laatste tijd
+double P = 2; // Proportionele term voor de PID-regelaar
+double I = 0.1; // Integratieve term voor de PID-regelaar
+double D = 0.1; // Differentiërende term voor de PID-regelaar
+double error; // Variabele voor het opslaan van de fout in de regeling
+double dt; // Tijd tussen metingen voor de PID-regelaar
+double setpoint = 550; // Gewenste sensorwaarde
+double previous; // Vorige foutwaarde voor de differentiërende term in de PID-regelaar
+```
+De code in de setup blijft het zelfde. De seriële communicatie wordt nog steeds geïnitialiseerd en de servo positie wordt weer naar een "start" waarde gezet. Voordat de loop wordt uitgelegd zal eerste het deel wat de PID waarde berekent aan bod komen. Hieronder !SVEN KAN JIJ DIT UITLEGGEN, IK NIET SNAP/ IK KAN NIET GOED GENOEG UITLEGGEN! <3 DANKU <3 
+
+```ruby
+double calculatePID() {
+  double proportioneel = error * P; // Bereken de proportionele term
+  double integraal = (integraal + error * dt) * I; // Bereken de integratieve term
+  double differentiaal = ((error - previous) / dt) * D; // Bereken de differentiërende term
+  previous = error; // Bijwerken van de vorige foutwaarde
+  return (proportioneel + integraal + differentiaal); // Bereken de totale PID-uitvoer
+}
+```
+De loop in deze code ziet er als volgt uit: 
+
+```ruby
+void loop() {
+  if (millis() - currentTime >= 50) { // Regel de meetfrequentie
+    currentTime = millis();
+    double now = millis();
+    dt = (now - lastTime) / 1000.0; // Bereken de tijd tussen metingen
+    lastTime = now;
+
+    sensorValue = readSensor(); // Lees de sensorwaarde
+    sensorValue = map(sensorValue, 20.0, 350.0, 0.0, 1000.0); // Mapping van de sensorwaarde naar een specifiek bereik
+    error = setpoint - sensorValue; // Bereken de fout in de regeling
+    double output = calculatePID(); // Bereken de PID-uitvoer
+
+    output = map(output, -1000, 1000, 210, 60); // Mapping van de PID-uitvoer naar een geschikt bereik
+
+    // Begrens de servo-uitvoer binnen bepaalde grenzen zodat de servo niet extreme waardes binnen krijgt wanneer er een PID waarde tussen zit die extreem anders is dan de gemiddelde waarde, hierdoor blijft de servo binnen de gestelde waardes van 60 en 220
+    if (output < 60) {
+      output = 60;
+    }
+    if (output > 220) {
+      output = 220;
+    }
+
+    myServo.write(output); // Stuur de Servo-motor aan naar de berekende positie
+
+    Serial.println(output); // Uitvoer van de PID-uitvoer
+    Serial.println(sensorValue); // Uitvoer van de gemeten sensorwaarde
+  }
+}
+```
+!SVEN KAN JIJ DIT DEEL OOK UITLEGGEN? <3
+
+### *Code voor het versturen naar een web interface* 
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 ! FORMAT VOORBEELDEN HIERONDER !
