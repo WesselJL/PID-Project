@@ -22,19 +22,19 @@ Voor dit PID bal balanceer project is er gekozen voor de MG90-servo, de VL53L0X 
 
 ![MG90S-180-1](https://github.com/WesselJL/PID-Project/assets/80854689/1b33b8b9-5ac1-4ebd-b266-8300f48a2a51)
 
-De MG90-servo is gekozen vanwege de volgende eigenschappen: nauwkeurig, betrouwbaar en licht van gewicht. Met een hoog koppel voor de afmeting van de servo motor en de nauwkeurige positioneringsmogelijkheden zorgt de MG90 voor het balanceren van de bal. Bovendien is het compacte formaat van de servo gunstig voor het toepassen in ons project zonder dat er extra gewicht wordt toe gevoegd.
+De MG90-servo is gekozen vanwege de volgende eigenschappen: nauwkeurig, betrouwbaar, betaalbaar en relatief klein. Met een hoog koppel voor de afmeting van de servo motor en de nauwkeurig stapgrootte maakt de MG90 het moeglijk om de bal precies en snel te balanceren. Bovendien is het compacte formaat van de servo gunstig voor het toepassen in ons project, hierdoor is het te printen onderdeel compact te houden.
 
 ### *VL530IX tof sensor*
 
 ![550x332](https://github.com/WesselJL/PID-Project/assets/80854689/281ce940-92aa-434b-9571-d8b94be0e529)
 
-De VL53L0X Time-of-Flight-sensor is een belangrijk component in dit project vanwege de mogelijkheid om snel en nauwkeurig afstanden te meten. Het ToF-principe zorgt er voor dat in real-time de afastands gegevens worden verkregen over de afstand tussen de sensor en de bal die gebalanceerd moet worden. Deze gegevens zijn essentieel voor de PID-regeling om snel en effectief te reageren op veranderingen in de positie van de bal. Deze sensor kan afstanden meten tot 2 meter dus dat is ruim voldoende voor deze opstelling. De snelste modus van de sensor kan met een afstand van 1.2 meter en een nauwkeurigheid van +/- 5% elke 20ms een afstand meten. 
+De VL53L0X Time-of-Flight-sensor is een belangrijk component in dit project vanwege de mogelijkheid om snel en nauwkeurig afstanden te meten. Het ToF-principe zorgt er voor dat in real-time de afstands gegevens worden verkregen over de afstand tussen de sensor en de bal die gebalanceerd moet worden. Deze gegevens zijn essentieel voor de PID-regeling om snel en effectief te reageren op veranderingen in de positie van de bal. Deze sensor kan afstanden meten tot 2 meter dus dat is ruim voldoende voor deze opstelling. De snelste modus van de sensor kan met een afstand van 1.2 meter en een nauwkeurigheid van +/- 5% elke 20ms een afstand meten. 
 
 ### *ESP32 WROOM*
 
 ![61o2ZUzB4XL _AC_UF894,1000_QL80_](https://github.com/WesselJL/PID-Project/assets/80854689/310c40ca-6b5b-4fcb-a35d-c50960a8601e)
 
-De keuze voor de ESP32 WROOM als microcontroller is gemaakt omdat die een krachtige verwerkingscapaciteit, geavanceerde communicatiemogelijkheden en brede ondersteuning in de open source wereld heeft. De dual-core processor op 240 MHz biedt voldoende rekenkracht om de PID-regeling te implementeren en tegelijkertijd andere taken uit te voeren. Bovendien maakt de geïntegreerde Wi-Fi-connectiviteit van de ESP32 WROOM draadloze communicatie mogelijk, waardoor het gemakkelijk is om gegevens te verzenden en ontvangen voor verdere analyse en aanpassingen.
+De keuze voor de ESP32 WROOM als microcontroller is gemaakt omdat die een krachtige processor, wifi mogelijkheid en brede ondersteuning in de open source wereld heeft. De dual-core processor op 240 MHz biedt voldoende rekenkracht om de PID-regeling te implementeren en tegelijkertijd andere taken uit te voeren. Bovendien maakt de geïntegreerde Wi-Fi-connectiviteit van de ESP32 WROOM draadloze communicatie mogelijk, waardoor het gemakkelijk is om gegevens PID waardes live aan te kunnnen passen. Dit is een leuke ADD-on voor interactieve lessen voor studenten. 
 
 > [!NOTE]
 > De componenten die hierboven genoemd en toegelicht zijn zitten aangesloten op een gaatjes print. De kabels dienen lang genoeg te zijn, dit omdat de sensor met de balk/ goot mee kantelt wanneer de bal gebalanceerd wordt.
@@ -59,7 +59,7 @@ Dan als volgende is het de pin initialisatie van de servo motor, initialisatie v
 Adafruit_VL53L0X lox = Adafruit_VL53L0X(); // Initialisatie van de sensor variabele
 Servo servo; // Initialisatie van de Servo motor
 ```
-In de setup van het programma wordt de seriële communicatie opgesteld en wordt er gecontroleerd of de VL53LOX juist is opgestart. Wanneer dit niet het geval is dan wordt er een foutmelding in de seriële monitor geprint. Daarnaast wordt ook de servo variabele gekoppeld aan de Servo pin en wordt de positie van de servo motor ingesteld op 90 graden, dit is de start positie.
+In de setup van het programma wordt de seriële communicatie opgesteld en wordt er gecontroleerd of de VL53LOX juist is opgestart. Wanneer dit niet het geval is dan wordt er een foutmelding in de seriële monitor geprint en blijft het systeem in een oneindige 'halt' loop. Daarnaast wordt ook de servo variabele gekoppeld aan de Servo pin en wordt de positie van de servo motor ingesteld op 90 graden, dit is de start positie.
 
 ```ruby
 void setup() {
@@ -154,7 +154,7 @@ $K_i$ : Dit is de integrale factor van het systeem
 
 $K_d$ : Dit is de afgeleide factor van het systeem
 
-Deze formule berekent op basis van de fout tussen het gewenste punt/ waarde en de huidige waarde een output waarde die bijvoorbeeld de aansturing van een motor, de positie van een servo of de tempratuur in je huis aan geeft. $e(t)$ is de fout op een bepaald moment in de tijd en het verschil tussen de waarde waar je wilt eindigen en de werkelijke waarde op dat moment. $K_p$ is de proportionele factor van het systeem, deze waarde bepaalt hoe sterk de uitvoer reageert op de directe fout. $K_i$ is de integrale factor. Deze factor neemt de afwijkingen uit het verleden en telt de waardes op en corrigeert daarmee binnen I-tijd (in seconden) de aansturing/ output waarde. $K_d$ Dit is de afgeleide factor van het systeem en meet de snelheid waarmee de fout veranderd. Dit zorgt er voor dat overshoot wordt verminderd (het voorbij de vooraf ingestelde waarde/ setpoint gaan). Voor meer uitgebreide informatie en voorbeelden van PID systemen zie deze [link](https://nl.wikipedia.org/wiki/PID-regelaar) naar de uitleg.
+Deze formule berekent op basis van de fout tussen het gewenste punt en de huidige meetwaarde een output die bijvoorbeeld de aansturing van een motor, de positie van een servo of de tempratuur in je huis aan geeft. $e(t)$ is de fout op een bepaald moment in de tijd en het verschil tussen de waarde waar je wilt eindigen en de werkelijke waarde op dat moment. $K_p$ is de proportionele factor van het systeem, deze waarde bepaalt hoe sterk de uitvoer reageert op de directe fout. $K_i$ is de integrale factor. Deze factor neemt de afwijkingen uit het verleden en telt de waardes op en corrigeert daarmee binnen I-tijd (in seconden) de aansturing/ output waarde. $K_d$ Dit is de afgeleide factor van het systeem en meet de snelheid waarmee de fout veranderd. Dit zorgt er voor dat overshoot wordt verminderd (het voorbij de vooraf ingestelde waarde/ setpoint gaan). Voor meer uitgebreide informatie en voorbeelden van PID systemen zie deze [link](https://nl.wikipedia.org/wiki/PID-regelaar) naar de uitleg.
 
 ### *Code met PID*
 
@@ -228,7 +228,7 @@ void loop() {
   }
 }
 ```
-De loop begint met een if statement die ervoor zorgt dat het programma onder de if elke 50ms wordt uitgevoerd. 50ms is gekozen omdat de servo niet sneller kan reageren.
+De loop begint met een if statement die ervoor zorgt dat het programma in de 'if' elke 50ms wordt uitgevoerd. 50ms is gekozen omdat de servo niet sneller kan reageren.
 
 Vervolgens wordt de exacte $d(t)$ berekend die tussen de cycles in zit, dit is nodig om precies de Integraal en Differentiaal te kunnen regelen. 
 
@@ -242,7 +242,7 @@ De code met PID kan je zien in de volgende [video](https://youtu.be/Alv6lQySq_s)
 
 ### *Code voor het veranderen van PID waardes in web interface* 
 
-Om de PID waardes te veranderen in een web interface wordt er in de setup van de code een deel toegevoegd wat er voor zorgt dat de ESP32 verbind met een wifi netwerk en dat de ESP32 wordt geconfigureerd als acces point. Vervolgens geeft de code een ip address die gebruikt kan worden om naar de web interface te navigeren. De code hiervan staat hieronder uitgelegd:
+Om de PID waardes te veranderen in een web interface wordt er in de setup van de code een deel toegevoegd wat er voor zorgt dat de ESP32 wordt geconfigureerd als acces point. Vervolgens geeft de code een ip address die gebruikt kan worden om naar de web interface te navigeren. De code hiervan staat hieronder uitgelegd:
 
 ```ruby
   // Verbind met het Wi-Fi-netwerk met SSID en wachtwoord
@@ -278,7 +278,7 @@ om de HTML webpagina te tonen met 3 invoer velden van de PID waardes en 3 bevest
             // Voeg een verzendknop toe voor elke variabele om de formulierinzending te activeren
             client.println("<p><input type=\"submit\" name=\"updateP\" value=\"Update Values\"></p>");
 ```
-Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnaast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabelen die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
+Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnaast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de variabelen die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
 
 ```ruby
 // Werk de PID-parameter bij op basis van de POST-gegevens
