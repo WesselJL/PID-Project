@@ -278,7 +278,7 @@ om de HTML webpagina te tonen met 3 invoer velden van de PID waardes en 3 bevest
             // Voeg een verzendknop toe voor elke variabele om de formulierinzending te activeren
             client.println("<p><input type=\"submit\" name=\"updateP\" value=\"Update Values\"></p>");
 ```
-Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnaast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabeles die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
+Hierin worden de de PID waardes bijgewerkt op basis van de input, daarnaast zorgt dit deel ook voor de layout van de webpagina. Nadat er waardes zijn ingevuld voor P, I en D worden de waardes verstuurd naar de vaiabelen die eerder zijn uitgelegd. Dit wordt gedaan met de volgende regels code:
 
 ```ruby
 // Werk de PID-parameter bij op basis van de POST-gegevens
@@ -293,5 +293,6 @@ void updateParameter(String postBody, String paramName, float &param) {
 }
 ```
 
+Wanneer de codes die in de bestanden staan worden overgenomen en de juiste libaries zijn toegevoegd dan zou het systeem moeten werken zoals te zien is in de video's. Verannder de P, I en D waardes om de verschillende responsies van het systeem te kunnen zien.
 
 ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
